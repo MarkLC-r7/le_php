@@ -26,7 +26,7 @@ class LeLogger
 
 	private $_logToken = null;
 	
-	private $_timestampFormat = 'Y-m-d G:i:s';
+	private static $_timestampFormat = 'Y-m-d G:i:s';
 	
 	private static $instances = array();
 
@@ -51,7 +51,7 @@ class LeLogger
 
 	public function __destruct()
 	{
-		if ($this->_socket) {
+		if ($this->_socket != null) {
 			socket_close($this->_socket);
 		}
 	}
@@ -61,8 +61,6 @@ class LeLogger
 		$this->_socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 		
 		socket_connect($this->_socket, 'api.logentries.com', 10000);
-
-		$this->log("Opened connection", self::INFO);
 	}
 
 	public function Info($line)
@@ -72,7 +70,7 @@ class LeLogger
 
 	public function log($line, $severity)
 	{
-		if ($this->_socket === null)
+		if ($this->_socket == null)
 		{
 			$this->_createSocket();
 		}
