@@ -2,6 +2,7 @@
 
 class LeLogger
 {
+	//Some standard log levels
 	const ERROR = 0;
 	const WARN = 1;
 	const NOTICE = 2;
@@ -11,6 +12,11 @@ class LeLogger
 	const STATUS_SOCKET_OPEN = 1;
 	const STATUS_SOCKET_FAILED = 2;
 	const STATUS_SOCKET_CLOSED = 3;
+
+	// Logentries server address for receiving logs
+	const LE_ADDRESS = 'api.logentries.com';
+	// Logentries server port for receiving logs by token
+	const LE_PORT = 10000;
 
 	private $_socket = null;
 
@@ -46,7 +52,7 @@ class LeLogger
 	public function __destruct()
 	{
 		if ($this->_socket) {
-			fclose($this->_socket);
+			socket_close($this->_socket);
 		}
 	}
 
@@ -66,7 +72,7 @@ class LeLogger
 
 	public function log($line, $severity)
 	{
-		if ($this->_socket == null)
+		if ($this->_socket === null)
 		{
 			$this->_createSocket();
 		}
