@@ -20,6 +20,10 @@ class LeLogger
 
 	private $_socket = null;
 
+	private $_socketStatus = self::STATUS_SOCKET_CLOSED;
+
+	private $_defaultSeverity = self::DEBUG;
+
 	private $_severityThreshold = self::INFO;
 
 	private $_loggerName = null;
@@ -30,20 +34,27 @@ class LeLogger
 	
 	private static $instances = array();
 
-	public static function instance($loggerName, $token)
+	public static function getLogger($loggerName, $token, $severity = false)
 	{
+		if ($severity === false)
+		{
+			$severity = self::_defaultSeverity;
+		}
+	
 		if (in_array($loggerName, self::$instances)) {
 			return self::$instances[$loggerName];
 		}
 
-		self::$instances = new self($loggerName, $token);
+		self::$instances[$loggerName] = new self($loggerName, $token, $severity);
 
 		return self::$instances[$loggerName];
 	}
 
-	public function __construct($loggerName, $token)
+	private function __construct($loggerName, $token, $severity)
 	{
 		$this->_logToken = $token;		
+
+		$this->_severityThreshold = $severity;
 
 		//Make socket
 		$this->_createSocket();
@@ -60,7 +71,28 @@ class LeLogger
 	{
 		$this->_socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 		
-		socket_connect($this->_socket, 'api.logentries.com', 10000);
+		if ($this->_socket === false)
+		{
+			echo "Could not create socket for Logentries Logger, reason: " . socket_strerror(socket_last_error()) . "\n";
+			$this->_socketStatus = self::STATUS_SOCKET_FAILED;
+			return;
+		}
+
+		$result = socket_connect($this->_socket, 'api.logentries.com', 10000);
+
+		if ($result === false)
+		{
+			echo "Could not connect to Logentries, reason: " . socket_strerror(socket_last_error()) . "\n";
+			$this->_socketStatus = self::STATUS_SOCKET_FAILED;
+			return;
+		}
+
+		$this->_socketStatus = self::STATUS_SOCKET_OPEN;
+	}
+
+	public function Debug($line)
+	{
+		$this->log($line, self::DEBUG);
 	}
 
 	public function Info($line)
@@ -68,9 +100,24 @@ class LeLogger
 		$this->log($line, self::INFO);
 	}
 
+	public function Warn($line)
+	{
+		$this->log($line, self::WARN);
+	}
+
+	public function Error($line)
+	{
+		$this->log($line, self::ERROR);
+	}
+
+	public function Notice($line)
+	{
+		$this->log($line, self::NOTICE);
+	}
+
 	public function log($line, $severity)
 	{
-		if ($this->_socket == null)
+		if ($this->_socket === null)
 		{
 			$this->_createSocket();
 		}
@@ -86,9 +133,11 @@ class LeLogger
 
 	public function writeToSocket($line)
 	{
-		$finalLine = $this->_logToken . $line;
-
-		socket_write($this->_socket, $finalLine, strlen($finalLine));	
+		if ($this->_socketStatus == self::STATUS_SOCKET_OPEN)
+		{
+			$finalLine = $this->_logToken . $line;
+			socket_write($this->_socket, $finalLine, strlen($finalLine));	
+		}
 	}
 
 	private function _getTime($level)
