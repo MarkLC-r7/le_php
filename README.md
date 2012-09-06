@@ -27,12 +27,12 @@ To use it in your code, enter the following lines, making changes accordingly if
 
 	require_once dirname(__FILE__) . '/LeLogger-0.1/LeLogger.php';
 
-	$log = LeLogger::getLogger('loggerName', 'token);
+	$log = LeLogger::getLogger('loggerName', 'logToken');
 	
 	$log->Info("Hello Logentries, I'm an Info message");
 
-Two parameters need to be filled in here, loggerName and token.
+Two parameters need to be filled in here, loggerName and logToken.
 
 loggerName is the name of that particular logger which is for your benefit should you choose to have more than one.
 
-token is the token we copied earlier from the Logentries UI. It associates this logger with that log file.
+logToken is the token we copied earlier from the Logentries UI. It associates this logger with that log file on Logentries.
