@@ -21,4 +21,8 @@ library will use to access that logfile. You can copy and paste this now or late
 Code Setup
 ----------
 
-Now you need to download the library from our Downloads Tab
+Now you need to download the library from the Downloads Tab, unzip and place the folder in your apps directory.
+
+To include it in your code, enter the following line, making changes accordingly if you place it in a different location.
+
+`require_once dirname(__FILE__) . '/LeLogger-0.1/LeLogger.php';`
