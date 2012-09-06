@@ -12,7 +12,7 @@ When you have made your account on Logentries. Log in and create a new host with
 
 Then, click on your new host and inside that, create a new log file with a name that represents what you are logging,
 
-example:  myerrors.log. Bear in mind, these names are purely for your own benefit. Under source type, select Token TCP
+example:  'myerrors'. Bear in mind, these names are purely for your own benefit. Under source type, select Token TCP
 
 and click Register. You will notice a token appear beside the name of the log, these is a unique identifier that the logging
 
@@ -35,4 +35,4 @@ Two parameters need to be filled in here, loggerName and logToken.
 
 loggerName is the name of that particular logger which is for your benefit should you choose to have more than one.
 
-logToken is the token we copied earlier from the Logentries UI. It associates this logger with that log file on Logentries.
+logToken is the token we copied earlier from the Logentries UI. It associates that logger with the log file on Logentries.
