@@ -1,4 +1,4 @@
-Logentries to Logentries with Php
+Logging to Logentries with Php
 =======================================
 
 With these simple steps you can send your Php application logs to Logentries.
@@ -23,6 +23,16 @@ Code Setup
 
 Now you need to download the library from the Downloads Tab, unzip and place the folder in your apps directory.
 
-To include it in your code, enter the following line, making changes accordingly if you place it in a different location.
+To use it in your code, enter the following lines, making changes accordingly if you place it in a different location.
 
-`require_once dirname(__FILE__) . '/LeLogger-0.1/LeLogger.php';`
+	require_once dirname(__FILE__) . '/LeLogger-0.1/LeLogger.php';
+
+	$log = LeLogger::getLogger('loggerName', 'token);
+	
+	$log->Info("Hello Logentries, I'm an Info message");
+
+Two parameters need to be filled in here, loggerName and token.
+
+loggerName is the name of that particular logger which is for your benefit should you choose to have more than one.
+
+token is the token we copied earlier from the Logentries UI. It associates this logger with that log file.
