@@ -34,11 +34,11 @@ class LeLogger
 	
 	private static $instances = array();
 
-	public static function getLogger($loggerName, $token, $severity = false)
+	public static function getLogger($loggerName, $token, $severity=false)
 	{
 		if ($severity === false)
 		{
-			$severity = self::_defaultSeverity;
+			$severity = self::DEBUG;
 		}
 	
 		if (in_array($loggerName, self::$instances)) {
@@ -64,6 +64,7 @@ class LeLogger
 	{
 		if ($this->_socket != null) {
 			socket_close($this->_socket);
+			$this->_socketStatus = self::STATUS_SOCKET_CLOSED;
 		}
 	}
 
