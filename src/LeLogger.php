@@ -1,6 +1,21 @@
 <?php
 
-class LeLogger
+/**
+* Logging library for use with Logentries
+*
+* Usage:
+* $log = LeLogger::getLogger('mylogger', 'ad43g-dfd34-df3ed-3d3d3');
+* $log->Info("I'm an informational message");
+* $log->Warn("I'm a warning message");
+*
+* Design inspired by KLogger library which is available at 
+*   https://github.com/katzgrau/KLogger.git
+*
+* @author Mark Lacomber <marklacomber@gmail.com>
+* @version 0.1
+*/
+
+class LeLogger 
 {
 	//Some standard log levels
 	const ERROR = 0;
