@@ -79,7 +79,7 @@ class LeLogger
 			return;
 		}
 
-		$result = socket_connect($this->_socket, 'api.logentries.com', 10000);
+		$result = socket_connect($this->_socket, self::LE_ADDRESS, self::LE_PORT);
 
 		if ($result === false)
 		{
