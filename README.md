@@ -18,6 +18,31 @@ and click Register. You will notice a token appear beside the name of the log, t
 
 library will use to access that logfile. You can copy and paste this now or later.
 
+Parameter Setup
+---------------
+Inside the `LeLogger-0.1` folder, open `logentries.php` as you need to fill in two parameters, `LOGGER_NAME` and `LOGENTRIES_TOKEN`.
+
+`LOGGER_NAME` is the name of that particular logger which is for your benefit should you choose to have more than one.
+
+`LOGENTRIES_TOKEN` is the token we copied earlier from the Logentries UI. It associates that logger with the log file on Logentries.
+
+
+Optional Parameters
+-------------------
+
+You can also enter a third and fourth parameter called `opt_tcp` and `opt_severity`.
+
+`opt_tcp` is a boolean indicating whether you would like to use tcp over udp. It is false by default and setting to true may have an impact response time as logging takes place in-process.
+
+`opt_severity` lets you set a minimum severity for this logger. Is is set to DEBUG by default which allows all messages to be sent. The choices for this are:
+
+	LeLogger::ERROR
+	LeLogger::WARN
+	LeLogger::NOTICE
+	LeLogger::INFO
+	LeLogger::DEBUG
+
+
 Code Setup
 ----------
 
@@ -25,14 +50,13 @@ Now you need to download the library from the Downloads Tab, unzip and place the
 
 To use it in your code, enter the following lines, making changes accordingly if you place it in a different location.
 
-	require_once dirname(__FILE__) . '/LeLogger-0.1/LeLogger.php';
-
-	$log = LeLogger::getLogger('loggerName', 'logToken');
+	require dirname(__FILE__) . '/LeLogger-0.1/logentries.php';
 	
 	$log->Info("Hello Logentries, I'm an Info message");
 
-Two parameters need to be filled in here, loggerName and logToken.
 
-loggerName is the name of that particular logger which is for your benefit should you choose to have more than one.
+Note
+----
 
-logToken is the token we copied earlier from the Logentries UI. It associates that logger with the log file on Logentries.
+Be sure to conform to Php rules when using the optional parameters. If you wish to set `opt_severity`, you must also place true or false for `opt_tcp`
+
